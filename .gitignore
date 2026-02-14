@@ -1,0 +1,12 @@
+# Secretos
+.env
+
+# Dependencias gigantes (se instalan con npm install, no se suben)
+node_modules/
+
+# Logs de errores
+npm-debug.log*
+
+# Archivos de sistema (Mac/Windows)
+.DS_Store
+Thumbs.db
