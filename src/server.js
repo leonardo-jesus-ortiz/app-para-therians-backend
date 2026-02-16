@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/bd.js';
+import userRoutes from './routes/userRoutes.js';
 
 // 1. Configuración
 dotenv.config();
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 5000;
 // 2. Middlewares (Importante para que el Front te pueda mandar JSON)
 app.use(cors());
 app.use(express.json());
+app.use('/api/user', userRoutes); // Usamos las rutas de usuarios
 
 // 3. Rutas de prueba
 app.get('/', (req, res) => {
