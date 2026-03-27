@@ -1,17 +1,31 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs'; // <--- 1. NUEVO: Importar esto
+import bcrypt from 'bcryptjs';
 
 const userSchema = mongoose.Schema({
+    // Datos obligatorios
     nombre: { type: String, required: true, trim: true },
+    apellido: { type: String, trim: true }, 
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
+    
+    // Nuevos campos del registro de la Axis App
+    fechaNac: { type: String }, 
+    pais: { type: String, trim: true },
+    ciudad: { type: String, trim: true },
+    comunidad: { type: String },
+    orientacion: { type: String },
+    busca: { type: String },
+    bio: { type: String, trim: true },
+    intereses: [{ type: String }], // Array para guardar múltiples opciones
+    
+    // Datos extra
     theriotype: { type: String, default: "Desconocido" },
     esAdmin: { type: Boolean, default: false }
 }, {
     timestamps: true
 });
 
-// --- 2. NUEVO: BLOQUE DE ENCRIPTACIÓN ---
+// --- BLOQUE DE ENCRIPTACIÓN (Intacto) ---
 userSchema.pre('save', async function (next) {
     // Si no se modificó la password, no hacemos nada
     if (!this.isModified('password')) {
@@ -22,7 +36,7 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-// --- 3. NUEVO: MÉTODO PARA COMPARAR (Lo usaremos en el Login) ---
+// --- MÉTODO PARA COMPARAR (Intacto) ---
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
